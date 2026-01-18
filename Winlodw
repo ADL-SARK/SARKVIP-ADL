@@ -108,7 +108,122 @@ function g.AddSignal(h,i)
 table.insert(g.Signals,h:Connect(i))
 end
 
+function g.DisconnectAll()
+for h,i in next,g.Signals do
+local j=table.remove(g.Signals,h)
+j:Disconnect()
+end
+end
 
+
+function g.SafeCallback(h,...)
+if not h then
+return
+end
+
+local i,j=pcall(h,...)
+if not i then local
+k, l=j:find":%d+: "
+
+
+warn("[ WindUI: DEBUG Mode ] "..j)
+
+return g.WindUI:Notify{
+Title="DEBUG Mode: Error",
+Content=not l and j or j:sub(l+1),
+Duration=8,
+}
+end
+end
+
+function g.SetTheme(h)
+g.Theme=h
+g.UpdateTheme(nil,true)
+end
+
+function g.AddFontObject(h)
+table.insert(g.FontObjects,h)
+g.UpdateFont(g.Font)
+end
+
+function g.UpdateFont(h)
+g.Font=h
+for i,j in next,g.FontObjects do
+j.FontFace=Font.new(h,j.FontFace.Weight,j.FontFace.Style)
+end
+end
+
+function g.GetThemeProperty(h,i)
+return i[h]or g.Themes.Dark[h]
+end
+
+function g.AddThemeObject(h,i)
+g.Objects[h]={Object=h,Properties=i}
+g.UpdateTheme(h,false)
+return h
+end
+
+function g.UpdateTheme(h,i)
+local function ApplyTheme(j)
+for k,l in pairs(j.Properties or{})do
+local m=g.GetThemeProperty(l,g.Theme)
+if m then
+if not i then
+j.Object[k]=Color3.fromHex(m)
+else
+g.Tween(j.Object,0.08,{[k]=Color3.fromHex(m)}):Play()
+end
+end
+end
+end
+
+if h then
+local j=g.Objects[h]
+if j then
+ApplyTheme(j)
+end
+else
+for j,k in pairs(g.Objects)do
+ApplyTheme(k)
+end
+end
+end
+
+function g.Icon(h)
+return f.Icon(h)
+end
+
+function g.New(h,i,j)
+local k=Instance.new(h)
+
+for l,m in next,g.DefaultProperties[h]or{}do
+k[l]=m
+end
+
+for n,o in next,i or{}do
+if n~="ThemeTag"then
+k[n]=o
+end
+end
+
+for p,q in next,j or{}do
+q.Parent=k
+end
+
+if i and i.ThemeTag then
+g.AddThemeObject(k,i.ThemeTag)
+end
+if i and i.FontFace then
+g.AddFontObject(k)
+end
+return k
+end
+
+function g.Tween(h,i,j,...)
+return e:Create(h,TweenInfo.new(i,...),j)
+end
+
+function g.NewRoundFrame(h,i,j,k,n)
 
 
 
