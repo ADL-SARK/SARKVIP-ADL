@@ -126,16 +126,6 @@ if not i then local
 k, l=j:find":%d+: "
 
 
-warn("[ WindUI: DEBUG Mode ] "..j)
-
-return g.WindUI:Notify{
-Title="DEBUG Mode: Error",
-Content=not l and j or j:sub(l+1),
-Duration=8,
-}
-end
-end
-
 function g.SetTheme(h)
 g.Theme=h
 g.UpdateTheme(nil,true)
