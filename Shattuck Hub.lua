@@ -1,1 +1,1 @@
-n()yu={};F=E(j[1],r,z,true)end,61642}}};local j,I=766017,19563;while j~=637497 do local M=M[j%13+1];local)end)()()
+([[This file was protected with MoonSec V3]]):gsub('.+', (function(a) _TGJXQeYHIPTkkpp = a; end)); return(function(n,...)local _;local f;local g;local d;local y;local k;local e=24915;local t=
